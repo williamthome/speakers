@@ -41,7 +41,6 @@ function SpeakerDemographics({
   bio,
   company,
   twitterHandle,
-  favorite,
 }) {
   return (
     <div className="speaker-info">
@@ -51,7 +50,19 @@ function SpeakerDemographics({
         </h3>
       </div>
       <div>
-        <p>{bio} {company} {twitterHandle} {favorite}</p>
+        <p className="card-description">
+          {bio}
+        </p>
+        <div className="social d-flex flex-row mt-4">
+          <div className="company">
+            <h5>Company</h5>
+            <h6>{company}</h6>
+          </div>
+          <div className="twitter">
+            <h5>Twitter</h5>
+            <h6>{twitterHandle}</h6>
+          </div>
+        </div>
       </div>
     </div>
   )
