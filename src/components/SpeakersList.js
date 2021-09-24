@@ -1,10 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Speaker from "./Speaker"
 import { data } from "../../SpeakerData"
+import delay from "../utils/delay"
 
 function SpeakersList({ showSessions }) {
 
-  const [speakersData, setSpeakersData] = useState(data)
+  const [speakersData, setSpeakersData] = useState([])
+
+  useEffect(() => {
+    async function asyncFn() {
+      await delay(2000)
+      setSpeakersData(data)
+    }
+    asyncFn()
+  }, [])
 
   function onFavoriteToggle(id) {
     const currentSpeaker = speakersData.find((speaker) =>
