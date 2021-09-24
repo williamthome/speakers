@@ -3,7 +3,6 @@ import SpeakersToolbar from "./SpeakersToolbar"
 import SpeakersList from "./SpeakersList"
 
 function Speakers({
-  data,
   theme,
   setTheme,
 }) {
@@ -17,10 +16,7 @@ function Speakers({
         showSessions={showSessions}
         setShowSessions={setShowSessions}
       />
-      <SpeakersList
-        data={data}
-        showSessions={showSessions}
-      />
+      <SpeakersList showSessions={showSessions} />
     </>
   )
 }
