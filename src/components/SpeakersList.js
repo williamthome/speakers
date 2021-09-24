@@ -1,6 +1,12 @@
 import Speaker from "./Speaker"
 
 function SpeakersList({ data, showSessions }) {
+
+  function onFavoriteToggle(id) {
+    const speaker = data.find((s) => s.id === id)
+    console.log(speaker)
+  }
+
   return (
     <div className="container speakers-list">
       <div className="row">
@@ -10,6 +16,9 @@ function SpeakersList({ data, showSessions }) {
               key={speaker.id}
               speaker={speaker}
               showSessions={showSessions}
+              onFavoriteToggle={() =>
+                onFavoriteToggle(speaker.id)
+              }
             />
           )
         })}

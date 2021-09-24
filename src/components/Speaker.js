@@ -35,10 +35,10 @@ function SpeakerImage({
   )
 }
 
-function SpeakerFavorite({ favorite }) {
+function SpeakerFavorite({ favorite, onFavoriteToggle }) {
   return (
     <div className="action padB1">
-      <span>
+      <span onClick={onFavoriteToggle}>
         <i className={
           `fa orange ${favorite ? "fa-star" : "fa-star-o"}`
         } />
@@ -57,6 +57,7 @@ function SpeakerDemographics({
   company,
   twitterHandle,
   favorite,
+  onFavoriteToggle,
 }) {
   return (
     <div className="speaker-info">
@@ -65,7 +66,10 @@ function SpeakerDemographics({
           {first} {last}
         </h3>
       </div>
-      <SpeakerFavorite favorite={favorite} />
+      <SpeakerFavorite
+        favorite={favorite}
+        onFavoriteToggle={onFavoriteToggle}
+      />
       <div>
         <p className="card-description">
           {bio}
@@ -87,13 +91,17 @@ function SpeakerDemographics({
 
 function Speaker({
   speaker,
-  showSessions
+  showSessions,
+  onFavoriteToggle,
 }) {
   return (
     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4" >
       <div className="card card-height p-4 mt-4">
         <SpeakerImage {...speaker} />
-        <SpeakerDemographics {...speaker} />
+        <SpeakerDemographics
+          {...speaker}
+          onFavoriteToggle={onFavoriteToggle}
+        />
       </div>
       {showSessions && <Sessions sessions={speaker.sessions} />}
     </div>
