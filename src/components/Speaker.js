@@ -77,8 +77,8 @@ function Speaker({
       <div className="card card-height p-4 mt-4">
         <SpeakerImage {...speaker} />
         <SpeakerDemographics {...speaker} />
-        {showSessions && <Sessions sessions={speaker.sessions} />}
       </div>
+      {showSessions && <Sessions sessions={speaker.sessions} />}
     </div>
   )
 }
