@@ -35,12 +35,28 @@ function SpeakerImage({
   )
 }
 
+function SpeakerFavorite({ favorite }) {
+  return (
+    <div className="action padB1">
+      <span>
+        <i className={
+          `fa orange ${favorite ? "fa-star" : "fa-star-o"}`
+        } />
+        <span className="pl-1 pr-1">
+          Favorite
+        </span>
+      </span>
+    </div>
+  )
+}
+
 function SpeakerDemographics({
   first,
   last,
   bio,
   company,
   twitterHandle,
+  favorite,
 }) {
   return (
     <div className="speaker-info">
@@ -49,6 +65,7 @@ function SpeakerDemographics({
           {first} {last}
         </h3>
       </div>
+      <SpeakerFavorite favorite={favorite} />
       <div>
         <p className="card-description">
           {bio}
