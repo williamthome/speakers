@@ -1,4 +1,9 @@
+import { useState } from "react"
+
 function SpeakersToolbar() {
+  const [showSessions, setShowSessions] = useState(true)
+  const [theme, setTheme] = useState("light")
+
   return (
     <section className="toolbar dark-theme-header">
       <div className="container">
@@ -9,7 +14,10 @@ function SpeakersToolbar() {
               <label className="fav">
                 <input
                   type="checkbox"
-                  checked={true}
+                  checked={showSessions}
+                  onChange={({ target: { checked } }) =>
+                    setShowSessions(checked)
+                  }
                 />
                 <span className="switch"></span>
               </label>
@@ -19,7 +27,10 @@ function SpeakersToolbar() {
               <label className="dropdown">
                 <select
                   className="form-control theme"
-                  value="light"
+                  value={theme}
+                  onChange={({ target: { value } }) =>
+                    setTheme(value)
+                  }
                 >
                   <option value="light">
                     Light
