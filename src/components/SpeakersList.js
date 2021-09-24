@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import Speaker from "./Speaker"
 import { data } from "../../SpeakerData"
 import delay from "../utils/delay"
+import Skeleton from 'react-loading-skeleton'
+import range from "../utils/range"
 
 const RequestStatus = Object.freeze({
   Loading: Symbol("loading"),
@@ -47,7 +49,23 @@ function SpeakersList({ showSessions }) {
 
   const render = {
     [RequestStatus.Loading]: (
-      <div>Loading...</div>
+      <>
+        {range(0, 3).map((i) =>
+          <div
+            key={i}
+            className="col-xs-12 col-sm-12 col-md-6 col-lg-4"
+          >
+            <div className="card card-height p-4 mt-4">
+              <Skeleton
+                circle={true}
+                height={50}
+                width={50}
+              />
+              <Skeleton count={15} />
+            </div>
+          </div>
+        )}
+      </>
     ),
 
     [RequestStatus.Failure]: (
@@ -57,26 +75,30 @@ function SpeakersList({ showSessions }) {
     ),
 
     [RequestStatus.Success]: (
-      <div className="container speakers-list">
-        <div className="row">
-          {speakersData.map((speaker) => {
-            return (
-              <Speaker
-                key={speaker.id}
-                speaker={speaker}
-                showSessions={showSessions}
-                onFavoriteToggle={() =>
-                  onFavoriteToggle(speaker.id)
-                }
-              />
-            )
-          })}
-        </div>
-      </div>
+      <>
+        {speakersData.map((speaker) => {
+          return (
+            <Speaker
+              key={speaker.id}
+              speaker={speaker}
+              showSessions={showSessions}
+              onFavoriteToggle={() =>
+                onFavoriteToggle(speaker.id)
+              }
+            />
+          )
+        })}
+      </>
     )
   }
 
-  return render[requestStatus]
+  return (
+    <div className="container speakers-list">
+      <div className="row">
+        {render[requestStatus]}
+      </div>
+    </div>
+  )
 }
 
 export default SpeakersList
