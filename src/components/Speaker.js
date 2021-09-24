@@ -69,14 +69,15 @@ function SpeakerDemographics({
 }
 
 function Speaker({
-  speaker
+  speaker,
+  showSessions
 }) {
   return (
     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4" >
       <div className="card card-height p-4 mt-4">
         <SpeakerImage {...speaker} />
         <SpeakerDemographics {...speaker} />
-        <Sessions sessions={speaker.sessions} />
+        {showSessions && <Sessions sessions={speaker.sessions} />}
       </div>
     </div>
   )

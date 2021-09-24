@@ -1,4 +1,4 @@
-function Header() {
+function Header({ theme }) {
   return (
     <div className="padT4 padB4">
       <div className="container mobile-container">
@@ -9,12 +9,14 @@ function Header() {
               alt="SVCC Home Page"
             />
           </div>
-          <div className="light">
+          <div className={theme}>
             <h4 className="header-title">
               Silicon Valley Code Camp
             </h4>
           </div>
-          <div className="text-dark">
+          <div className={
+            theme === "light" ? "" : "text-info"
+          }>
             Hello Mr. Smith &nbsp;&nbsp;
             <span>
               <a href="#">

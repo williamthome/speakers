@@ -1,6 +1,6 @@
 import Speaker from "./Speaker"
 
-function SpeakersList({ data }) {
+function SpeakersList({ data, showSessions }) {
   return (
     <div className="container speakers-list">
       <div className="row">
@@ -9,6 +9,7 @@ function SpeakersList({ data }) {
             <Speaker
               key={speaker.id}
               speaker={speaker}
+              showSessions={showSessions}
             />
           )
         })}
