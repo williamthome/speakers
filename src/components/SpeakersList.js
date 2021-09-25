@@ -1,51 +1,15 @@
-import { useEffect, useState } from "react"
 import Speaker from "./Speaker"
-import { data } from "../../SpeakerData"
-import delay from "../utils/delay"
 import Skeleton from 'react-loading-skeleton'
 import range from "../utils/range"
-
-const RequestStatus = Object.freeze({
-  Loading: Symbol("loading"),
-  Success: Symbol("success"),
-  Failure: Symbol("failure"),
-})
+import useRequestSpeakers, { RequestStatus } from "../hooks/useRequestSpeakers"
 
 function SpeakersList({ showSessions }) {
-  const [speakersData, setSpeakersData] = useState([])
-  const [requestStatus, setRequestStatus] = useState(RequestStatus.Loading)
-  const [error, setError] = useState("")
-
-  useEffect(() => {
-    async function asyncFn() {
-      try {
-        await delay(2000)
-        setSpeakersData(data)
-        setRequestStatus(RequestStatus.Success)
-      } catch (reason) {
-        setError(reason)
-        setRequestStatus(RequestStatus.Failure)
-      }
-    }
-    asyncFn()
-  }, [])
-
-  function onFavoriteToggle(id) {
-    const currentSpeaker = speakersData.find((speaker) =>
-      speaker.id === id
-    )
-
-    const updatedSpeaker = {
-      ...currentSpeaker,
-      favorite: !currentSpeaker.favorite
-    }
-
-    const updatedData = speakersData.map(speaker =>
-      speaker.id === id ? updatedSpeaker : speaker
-    )
-
-    setSpeakersData(updatedData)
-  }
+  const {
+    speakersData,
+    requestStatus,
+    error,
+    onFavoriteToggle,
+  } = useRequestSpeakers(2000)
 
   const render = {
     [RequestStatus.Loading]: (
