@@ -1,15 +1,16 @@
 import Speaker from "./Speaker"
 import Skeleton from 'react-loading-skeleton'
 import range from "../utils/range"
-import useRequestSpeakers, { RequestStatus } from "../hooks/useRequestSpeakers"
+import useRequestDelay, { RequestStatus } from "../hooks/useRequestDelay"
+import { data } from "../../SpeakerData"
 
 function SpeakersList({ showSessions }) {
   const {
-    speakersData,
+    data: speakersData,
     requestStatus,
     error,
-    onFavoriteToggle,
-  } = useRequestSpeakers(2000)
+    updateRecord,
+  } = useRequestDelay(2000, data)
 
   const render = {
     [RequestStatus.Loading]: (
@@ -47,7 +48,10 @@ function SpeakersList({ showSessions }) {
               speaker={speaker}
               showSessions={showSessions}
               onFavoriteToggle={() =>
-                onFavoriteToggle(speaker.id)
+                updateRecord({
+                  ...speaker,
+                  favorite: !speaker.favorite
+                })
               }
             />
           )
