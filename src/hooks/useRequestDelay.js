@@ -12,25 +12,37 @@ function useRequestDelay(delayTime, initialData = []) {
   const [requestStatus, setRequestStatus] = useState(RequestStatus.Loading)
   const [error, setError] = useState("")
 
-  async function setDataWithDelay(newData) {
-    try {
-      await delay(delayTime)
-      setData(newData)
-      setRequestStatus(RequestStatus.Success)
-    } catch (reason) {
-      setError(reason)
-      setRequestStatus(RequestStatus.Failure)
+  useEffect(() => {
+    async function setDataWithDelay() {
+      try {
+        await delay(delayTime)
+        setData(initialData)
+        setRequestStatus(RequestStatus.Success)
+      } catch (reason) {
+        setError(reason)
+        setRequestStatus(RequestStatus.Failure)
+      }
     }
-  }
 
-  useEffect(() => setDataWithDelay(initialData), [])
+    setDataWithDelay()
+  }, [])
 
-  function updateRecord(recordUpdated) {
+  function updateRecord(recordUpdated, doneCallback) {
     const dataUpdated = data.map(record =>
       record.id === recordUpdated.id ? recordUpdated : record
     )
 
-    setDataWithDelay(dataUpdated)
+    async function setDataWithDelay() {
+      try {
+        await delay(delayTime)
+        setData(dataUpdated)
+        typeof doneCallback === "function" && doneCallback()
+      } catch (reason) {
+        alert(reason)
+      }
+    }
+
+    setDataWithDelay()
   }
 
   return {
