@@ -5,6 +5,7 @@ import useRequestDelay, { RequestStatus } from "../hooks/useRequestDelay"
 import { data } from "../../SpeakerData"
 import { useContext } from "react"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
+import SpeakerAdd from "./SpeakerAdd"
 
 function SpeakersList() {
   const {
@@ -12,13 +13,15 @@ function SpeakersList() {
     requestStatus,
     error,
     updateRecord,
+    insertRecord,
+    deleteRecord,
   } = useRequestDelay(2000, data)
 
-  const { searchQuery, } = useContext(SpeakerFilterContext)
+  const { eventYear, searchQuery, } = useContext(SpeakerFilterContext)
 
   const render = {
     [RequestStatus.Loading]: (
-      <>
+      <div className="row">
         {range(0, 3).map((i) =>
           <div
             key={i}
@@ -34,7 +37,7 @@ function SpeakersList() {
             </div>
           </div>
         )}
-      </>
+      </div>
     ),
 
     [RequestStatus.Failure]: (
@@ -45,32 +48,38 @@ function SpeakersList() {
 
     [RequestStatus.Success]: (
       <>
-        {speakersData
-          .filter(({ first, last }) => {
-            if (!searchQuery) return true
+        <SpeakerAdd
+          eventYear={eventYear}
+          insertRecord={insertRecord}
+        />
+        <div className="row">
+          {speakersData
+            .filter(({ first, last }) => {
+              if (!searchQuery) return true
 
-            return `${first} ${last}`
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())
-          })
-          .map((speaker) => {
-            return (
-              <Speaker
-                key={speaker.id}
-                speaker={speaker}
-                updateRecord={updateRecord}
-              />
-            )
-          })}
+              return `${first} ${last}`
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())
+            })
+            .map((speaker) => {
+              return (
+                <Speaker
+                  key={speaker.id}
+                  speaker={speaker}
+                  updateRecord={updateRecord}
+                  insertRecord={insertRecord}
+                  deleteRecord={deleteRecord}
+                />
+              )
+            })}
+        </div>
       </>
     )
   }
 
   return (
     <div className="container speakers-list">
-      <div className="row">
-        {render[requestStatus]}
-      </div>
+      {render[requestStatus]}
     </div>
   )
 }

@@ -12,40 +12,46 @@ function useRequestDelay(delayTime, initialData = []) {
   const [requestStatus, setRequestStatus] = useState(RequestStatus.Loading)
   const [error, setError] = useState("")
 
-  useEffect(() => {
-    async function setDataWithDelay() {
-      try {
-        await delay(delayTime)
-        setData(initialData)
-        setRequestStatus(RequestStatus.Success)
-      } catch (reason) {
-        setError(reason)
-        setRequestStatus(RequestStatus.Failure)
-      }
+  useEffect(async () => {
+    try {
+      await delay(delayTime)
+      setData(initialData)
+      setRequestStatus(RequestStatus.Success)
+    } catch (reason) {
+      setError(reason)
+      setRequestStatus(RequestStatus.Failure)
     }
-
-    setDataWithDelay()
   }, [])
 
-  function updateRecord(recordUpdated, doneCallback) {
-    const originalRecords = [...data]
+  async function setDataWithDelay(newData, doneCallback) {
+    const backup = [...data]
 
-    const dataUpdated = data.map(record =>
+    try {
+      setData(newData)
+      await delay(delayTime)
+      typeof doneCallback === "function" && doneCallback()
+    } catch (reason) {
+      setData(backup)
+      alert(reason)
+    }
+  }
+
+  async function updateRecord(recordUpdated, doneCallback) {
+    const newData = data.map(record =>
       record.id === recordUpdated.id ? recordUpdated : record
     )
+    await setDataWithDelay(newData, doneCallback)
+  }
 
-    async function setDataWithDelay() {
-      try {
-        setData(dataUpdated)
-        await delay(delayTime)
-        typeof doneCallback === "function" && doneCallback()
-      } catch (reason) {
-        setData(originalRecords)
-        alert(reason)
-      }
-    }
+  async function insertRecord(newRecord, doneCallback) {
+    await setDataWithDelay([newRecord, ...data], doneCallback)
+  }
 
-    setDataWithDelay()
+  async function deleteRecord(recordToDelete, doneCallback) {
+    const newData = data.filter(record =>
+      record.id !== recordToDelete.id
+    )
+    await setDataWithDelay(newData, doneCallback)
   }
 
   return {
@@ -53,6 +59,8 @@ function useRequestDelay(delayTime, initialData = []) {
     requestStatus,
     error,
     updateRecord,
+    insertRecord,
+    deleteRecord,
   }
 }
 
