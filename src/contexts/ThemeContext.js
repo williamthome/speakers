@@ -1,9 +1,10 @@
-import { createContext, useState } from "react"
+import { createContext } from "react"
+import useTheme from "../hooks/useTheme"
 
 const ThemeContext = createContext()
 
 function ThemeProvider({ children, initialTheme }) {
-  const [theme, setTheme] = useState(initialTheme)
+  const { theme, setTheme } = useTheme(initialTheme)
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
