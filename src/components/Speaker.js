@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import SpeakerContext, { SpeakerProvider } from "../contexts/SpeakerContext"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
+import SpeakerDelete from "./SpeakerDelete"
 
 function Session({
   title,
@@ -132,17 +133,31 @@ function SpeakerDemographics() {
   )
 }
 
-function Speaker({ speaker, updateRecord }) {
+function Speaker({
+  speaker,
+  updateRecord,
+  insertRecord,
+  deleteRecord,
+}) {
   const { showSessions } = useContext(SpeakerFilterContext)
 
   return (
-    <SpeakerProvider speaker={speaker} updateRecord={updateRecord}>
+    <SpeakerProvider
+      speaker={speaker}
+      updateRecord={updateRecord}
+      insertRecord={insertRecord}
+      deleteRecord={deleteRecord}
+    >
       <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4" >
         <div className="card card-height p-4 mt-4">
           <SpeakerImage />
           <SpeakerDemographics />
         </div>
         {showSessions && <Sessions />}
+        <SpeakerDelete
+          speaker={speaker}
+          deleteRecord={deleteRecord}
+        />
       </div>
     </SpeakerProvider>
   )
