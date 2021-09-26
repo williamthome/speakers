@@ -1,6 +1,6 @@
 import SpeakersToolbar from "./SpeakersToolbar"
 import SpeakersList from "./SpeakersList"
-import SpeakerFilterProvider from "../contexts/SpeakerFilterContext"
+import { SpeakerFilterProvider } from "../contexts/SpeakerFilterContext"
 
 function Speakers() {
   return (

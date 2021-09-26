@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import ThemeProvider, { ThemeContext } from "../contexts/ThemeContext"
+import ThemeContext, { ThemeProvider } from "../contexts/ThemeContext"
 
 function LayoutNoThemeProvider({ children }) {
   const { theme } = useContext(ThemeContext)

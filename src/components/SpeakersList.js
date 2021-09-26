@@ -3,11 +3,6 @@ import Skeleton from 'react-loading-skeleton'
 import range from "../utils/range"
 import useRequestDelay, { RequestStatus } from "../hooks/useRequestDelay"
 import { data } from "../../SpeakerData"
-<<<<<<< Updated upstream
-import { useContext } from "react"
-import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext"
-=======
->>>>>>> Stashed changes
 
 function SpeakersList() {
   const {

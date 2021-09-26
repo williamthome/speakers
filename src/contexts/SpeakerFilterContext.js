@@ -13,5 +13,5 @@ function SpeakerFilterProvider({ children, initialShowSessions }) {
   )
 }
 
-export default SpeakerFilterProvider
-export { SpeakerFilterContext }
+export default SpeakerFilterContext
+export { SpeakerFilterProvider }

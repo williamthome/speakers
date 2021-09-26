@@ -13,5 +13,5 @@ function ThemeProvider({ children, initialTheme }) {
   )
 }
 
-export default ThemeProvider
-export { ThemeContext }
+export default ThemeContext
+export { ThemeProvider }
