@@ -4,7 +4,10 @@ import { SpeakerFilterProvider } from "../contexts/SpeakerFilterContext"
 
 function Speakers() {
   return (
-    <SpeakerFilterProvider initialShowSessions={true} >
+    <SpeakerFilterProvider
+      initialShowSessions={true}
+      initialEventYear={"2012"}
+    >
       <SpeakersToolbar />
       <SpeakersList />
     </SpeakerFilterProvider>

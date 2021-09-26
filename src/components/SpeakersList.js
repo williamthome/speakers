@@ -3,6 +3,8 @@ import Skeleton from 'react-loading-skeleton'
 import range from "../utils/range"
 import useRequestDelay, { RequestStatus } from "../hooks/useRequestDelay"
 import { data } from "../../SpeakerData"
+import { useContext } from "react"
+import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
 
 function SpeakersList() {
   const {
@@ -11,6 +13,11 @@ function SpeakersList() {
     error,
     updateRecord,
   } = useRequestDelay(2000, data)
+
+  const {
+    searchQuery,
+    eventYear,
+  } = useContext(SpeakerFilterContext)
 
   const render = {
     [RequestStatus.Loading]: (
@@ -41,23 +48,31 @@ function SpeakersList() {
 
     [RequestStatus.Success]: (
       <>
-        {speakersData.map((speaker) => {
-          return (
-            <Speaker
-              key={speaker.id}
-              speaker={speaker}
-              onFavoriteToggle={(doneCallback) =>
-                updateRecord(
-                  {
-                    ...speaker,
-                    favorite: !speaker.favorite
-                  },
-                  doneCallback
-                )
-              }
-            />
-          )
-        })}
+        {speakersData
+          .filter(({ first, last }) => {
+            if (!searchQuery) return true
+
+            return `${first} ${last}`
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          })
+          .map((speaker) => {
+            return (
+              <Speaker
+                key={speaker.id}
+                speaker={speaker}
+                onFavoriteToggle={(doneCallback) =>
+                  updateRecord(
+                    {
+                      ...speaker,
+                      favorite: !speaker.favorite
+                    },
+                    doneCallback
+                  )
+                }
+              />
+            )
+          })}
       </>
     )
   }
