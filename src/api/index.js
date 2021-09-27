@@ -25,12 +25,3 @@ export async function getDbSpeakersData() {
 export async function setDbSpeakersData(speakers) {
   await setDbData({ speakers })
 }
-
-export async function genSpeakerId() {
-  const speakers = await getDbSpeakersData()
-
-  const lastSpeaker = speakers[speakers.length - 1]
-  return lastSpeaker
-    ? lastSpeaker.id + 1
-    : 0
-}

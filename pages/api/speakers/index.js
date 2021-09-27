@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { genSpeakerId, getDbSpeakersData, setDbSpeakersData } from "../../../src/api"
+import { getDbSpeakersData, setDbSpeakersData } from "../../../src/api"
 
 /**
  * Handler
@@ -45,20 +45,13 @@ async function getMethod(_req, res) {
  * @param {NextApiResponse} res
  */
 async function postMethod(req, res) {
-  const { body } = req
+  const { body: speaker } = req
 
-  if (!body || body !== Object(body))
+  if (!speaker || speaker !== Object(speaker))
     return res.status(400).json({ name: "BadRequest", msg: "Invalid payload" })
 
-  if (!body.first)
+  if (!speaker.first)
     return res.status(400).json({ name: "BadRequest", msg: "First name is required" })
-
-  const id = await genSpeakerId()
-
-  const speaker = {
-    ...body,
-    id,
-  }
 
   const speakers = await getDbSpeakersData()
   const newSpeakers = [speaker, ...speakers]

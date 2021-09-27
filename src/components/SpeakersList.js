@@ -1,7 +1,7 @@
 import Speaker from "./Speaker"
 import Skeleton from 'react-loading-skeleton'
 import range from "../utils/range"
-import useRequestDelay, { RequestStatus } from "../hooks/useRequestDelay"
+import useRequestRest, { RequestStatus } from "../hooks/useRequestRest"
 import { data } from "../../SpeakerData"
 import { useContext } from "react"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
@@ -15,7 +15,7 @@ function SpeakersList() {
     updateRecord,
     insertRecord,
     deleteRecord,
-  } = useRequestDelay(2000, data)
+  } = useRequestRest(2000, data)
 
   const { eventYear, searchQuery, } = useContext(SpeakerFilterContext)
 

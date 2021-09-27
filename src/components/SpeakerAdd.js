@@ -1,17 +1,18 @@
+import genShortId from "../utils/genShortId"
+
 function SpeakerAdd({ eventYear, insertRecord, }) {
   function handleClick() {
     const name = prompt("Enter the speaker name:", "")
     if (!name) return
 
-    const [first, ...last] = name
+    const [first, ...last] = name.split(" ")
 
     const speaker = {
-      id: "99999",
       first,
       last: last.join(" "),
       sessions: [
         {
-          id: "88888",
+          id: genShortId(),
           title: `New session for ${first}`,
           room: {
             name: "Main ball room"
