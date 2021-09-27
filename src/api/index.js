@@ -17,6 +17,14 @@ async function setDbData(data) {
   )
 }
 
+export async function restoreDbFromBackup() {
+  const backupFile = resolve("./", "db_backup.json")
+  const backup = await readFile(backupFile)
+  const backupData = JSON.parse(backup, null, 2)
+  await setDbData(backupData)
+  return backupData
+}
+
 export async function getDbSpeakersData() {
   const { speakers } = await getDbData()
   return speakers

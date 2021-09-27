@@ -82,6 +82,7 @@ function useRequestRest() {
 
   return {
     data,
+    setData,
     requestStatus,
     error,
     updateRecord,

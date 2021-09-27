@@ -6,10 +6,12 @@ import { data } from "../../SpeakerData"
 import { useContext } from "react"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
 import SpeakerAdd from "./SpeakerAdd"
+import RestoreSpeakers from "./RestoreSpeakers"
 
 function SpeakersList() {
   const {
     data: speakersData,
+    setData: setSpeakersData,
     requestStatus,
     error,
     updateRecord,
@@ -48,10 +50,13 @@ function SpeakersList() {
 
     [RequestStatus.Success]: (
       <>
-        <SpeakerAdd
-          eventYear={eventYear}
-          insertRecord={insertRecord}
-        />
+        <div className="d-flex align-items-center justify-content-between">
+          <SpeakerAdd
+            eventYear={eventYear}
+            insertRecord={insertRecord}
+          />
+          <RestoreSpeakers setSpeakersData={setSpeakersData} />
+        </div>
         <div className="row">
           {speakersData
             .filter(({ first, last }) => {
