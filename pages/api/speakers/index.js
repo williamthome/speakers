@@ -1,20 +1,68 @@
-import { resolve } from "path"
-import { readFile } from "fs/promises"
+import { NextApiRequest, NextApiResponse } from "next"
+import { genSpeakerId, getDbSpeakersData, setDbSpeakersData } from "../../../src/api"
 
-export default async function handler(_req, res) {
-  try {
-    const dbFile = resolve("./", "db.json")
-    const dbData = await readFile(dbFile)
-    const { speakers } = JSON.parse(dbData)
+/**
+ * Handler
+ *
+ * @param {NextApiRequest} req
+ * @param {NextApiResponse} res
+ */
+export default async function handler(req, res) {
+  const { method, } = req
 
-    if (!speakers)
-      throw "Could not find speakers in db file."
-
-    res.setHeader("Content-type", "application/json")
-    res.status(200).send(JSON.stringify(speakers, null, 2))
-    console.log("GET /api/speakers status: 200")
-  } catch (reason) {
-    console.error("GET /api/speakers status: 404", reason)
-    res.status(404).send("Speakers database file not found.")
+  const methodAction = {
+    ["GET"]: getMethod,
+    ["POST"]: postMethod,
   }
+
+  const action = methodAction[method]
+
+  if (!action)
+    return res.status(501).json({ name: "ServerCannotAcceptArgument", msg: `Method ${method} not implemented` })
+
+  try {
+    await action(req, res)
+  } catch (reason) {
+    res.status(500).json(reason)
+  }
+}
+
+/**
+ * Get all speakers
+ *
+ * @param {NextApiRequest} _req
+ * @param {NextApiResponse} res
+ */
+async function getMethod(_req, res) {
+  const speakers = await getDbSpeakersData()
+  res.status(200).json(speakers)
+}
+
+/**
+ * Add a speaker
+ *
+ * @param {NextApiRequest} req
+ * @param {NextApiResponse} res
+ */
+async function postMethod(req, res) {
+  const { body } = req
+
+  if (!body || body !== Object(body))
+    return res.status(400).json({ name: "BadRequest", msg: "Invalid payload" })
+
+  if (!body.first)
+    return res.status(400).json({ name: "BadRequest", msg: "First name is required" })
+
+  const id = await genSpeakerId()
+
+  const speaker = {
+    ...body,
+    id,
+  }
+
+  const speakers = await getDbSpeakersData()
+  const newSpeakers = [speaker, ...speakers]
+  await setDbSpeakersData(newSpeakers)
+
+  res.status(200).json(newSpeakers)
 }
