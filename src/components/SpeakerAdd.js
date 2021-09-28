@@ -1,4 +1,8 @@
-function SpeakerAdd({ eventYear, insertRecord, }) {
+import withAuth from "../hocs/withAuth"
+
+function SpeakerAdd({ eventYear, insertRecord, loggedInUser }) {
+  if (!loggedInUser) return null
+
   function handleClick() {
     const name = prompt("Enter the speaker name:", "")
     if (!name) return
@@ -35,4 +39,4 @@ function SpeakerAdd({ eventYear, insertRecord, }) {
   )
 }
 
-export default SpeakerAdd
+export default withAuth(SpeakerAdd)

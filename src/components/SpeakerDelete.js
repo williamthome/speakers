@@ -1,4 +1,8 @@
-function SpeakerDelete({ speaker, deleteRecord }) {
+import withAuth from "../hocs/withAuth"
+
+function SpeakerDelete({ speaker, deleteRecord, loggedInUser }) {
+  if (!loggedInUser) return null
+
   function handleClick() {
     const ensureDelete = confirm(`Are you sure you want to delete ${speaker.first}?`)
     ensureDelete && deleteRecord(speaker)
@@ -18,4 +22,4 @@ function SpeakerDelete({ speaker, deleteRecord }) {
   )
 }
 
-export default SpeakerDelete
+export default withAuth(SpeakerDelete)
