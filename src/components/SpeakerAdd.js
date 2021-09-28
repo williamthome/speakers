@@ -1,4 +1,5 @@
 import withAuth from "../hocs/withAuth"
+import genShortId from "../utils/genShortId"
 
 function SpeakerAdd({ eventYear, insertRecord, loggedInUser }) {
   if (!loggedInUser) return null
@@ -10,12 +11,12 @@ function SpeakerAdd({ eventYear, insertRecord, loggedInUser }) {
     const [first, ...last] = name.split(" ")
 
     const speaker = {
-      id: "99999",
+      id: genShortId(),
       first,
       last: last.join(" "),
       sessions: [
         {
-          id: "88888",
+          id: genShortId(),
           title: `New session for ${first}`,
           room: {
             name: "Main ball room"
