@@ -6,6 +6,7 @@ import { data } from "../../SpeakerData"
 import { useContext } from "react"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
 import SpeakerAdd from "./SpeakerAdd"
+import ErrorBoundary from "./ErrorBoundary"
 
 function SpeakersList() {
   const {
@@ -79,7 +80,11 @@ function SpeakersList() {
 
   return (
     <div className="container speakers-list">
-      {render[requestStatus]}
+      <ErrorBoundary errorUI={
+        <span>Something went wrong in the speaker card</span>
+      }>
+        {render[requestStatus]}
+      </ErrorBoundary>
     </div>
   )
 }

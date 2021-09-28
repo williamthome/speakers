@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import SpeakerContext, { SpeakerProvider } from "../contexts/SpeakerContext"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
+import ErrorBoundary from "./ErrorBoundary"
 import SpeakerDelete from "./SpeakerDelete"
 
 function Session({
@@ -133,7 +134,7 @@ function SpeakerDemographics() {
   )
 }
 
-function Speaker({
+function SpeakerNoErrorBoundary({
   speaker,
   updateRecord,
   insertRecord,
@@ -160,6 +161,20 @@ function Speaker({
         />
       </div>
     </SpeakerProvider>
+  )
+}
+
+function Speaker(props) {
+  return (
+    <ErrorBoundary errorUI={
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4" >
+        <div className="card card-height p-4 mt-4 d-flex align-items-center justify-content-center">
+          <span>Something went wrong in the speaker card</span>
+        </div>
+      </div>
+    }>
+      <SpeakerNoErrorBoundary {...props}></SpeakerNoErrorBoundary>
+    </ErrorBoundary>
   )
 }
 
