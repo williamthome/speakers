@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { memo, useContext, useState } from "react"
 import SpeakerContext, { SpeakerProvider } from "../contexts/SpeakerContext"
 import SpeakerFilterContext from "../contexts/SpeakerFilterContext"
 import ErrorBoundary from "./ErrorBoundary"
@@ -164,7 +164,7 @@ function SpeakerNoErrorBoundary({
   )
 }
 
-function Speaker(props) {
+const Speaker = memo(function Speaker(props) {
   return (
     <ErrorBoundary errorUI={
       <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4" >
@@ -176,6 +176,10 @@ function Speaker(props) {
       <SpeakerNoErrorBoundary {...props}></SpeakerNoErrorBoundary>
     </ErrorBoundary>
   )
+}, areEqualSpeaker)
+
+function areEqualSpeaker(prevProps, nextProps) {
+  return prevProps.speaker.favorite === nextProps.speaker.favorite
 }
 
 export default Speaker
