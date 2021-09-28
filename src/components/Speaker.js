@@ -51,6 +51,7 @@ function SpeakerImage() {
       <img
         className="contain-fit"
         src={`/images/speaker-${id}.jpg`}
+        onError={(e) => { e.target.onerror = null; e.target.src = "/images/speaker-99999.jpg"; }}
         alt={`${first} ${last}`}
         width="300"
       />
